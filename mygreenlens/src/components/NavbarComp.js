@@ -7,6 +7,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import './navbarcolour.css'
 
 import Login from './Login';
 import Home from './Home';
@@ -17,8 +18,8 @@ export default class NavBarComp extends Component {
         return (
           <Router>
             <div>
-                <Navbar bg="light" expand="lg">
-                    <Navbar.Brand href="/">Green Lens</Navbar.Brand>
+                <Navbar className="custom-navbar" expand="lg">
+                    <Navbar.Brand href="/" style={{fontWeight: 'bold', paddingLeft: '20'}}>Green Lens</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
