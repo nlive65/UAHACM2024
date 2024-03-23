@@ -10,6 +10,7 @@ import {
 
 import Login from './Login';
 import Home from './Home';
+import Flower from './Flower';
 
 export default class NavBarComp extends Component {
     render(){
@@ -23,13 +24,7 @@ export default class NavBarComp extends Component {
                     <Nav className="mr-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2"> Another action </NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4"> Separated link </NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link as={Link} to="/Flower">Flower</Nav.Link>
                     </Nav>
                     <Form inline>
                     </Form>
@@ -39,7 +34,8 @@ export default class NavBarComp extends Component {
             <div>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>        
+                <Route path="/login" element={<Login/>}/>   
+                <Route path="/flower" element={<Flower/>}/>     
               </Routes>
             </div>
         </Router>
