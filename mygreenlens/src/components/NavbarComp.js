@@ -10,6 +10,7 @@ import {
 
 import Login from './Login';
 import Home from './Home';
+import VideoDetector from './imageIF';
 
 export default class NavBarComp extends Component {
     render(){
@@ -23,8 +24,9 @@ export default class NavBarComp extends Component {
                     <Nav className="mr-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                        <Nav.Link as={Link} to="/videoDetector">Recyclable</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                        <NavDropdown.Item href="#action/3.1">Image</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2"> Another action </NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
@@ -39,7 +41,8 @@ export default class NavBarComp extends Component {
             <div>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>        
+                <Route path="/login" element={<Login/>}/> 
+                <Route path='/VideoDetector' element={<VideoDetector/>}/>
               </Routes>
             </div>
         </Router>
