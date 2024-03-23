@@ -8,7 +8,7 @@ import {
   Link
 } from "react-router-dom";
 
-import Login from './Login';
+import LoginSignup from './LoginSignup/LoginSignup';
 import Home from './Home';
 
 export default class NavBarComp extends Component {
@@ -39,7 +39,7 @@ export default class NavBarComp extends Component {
             <div>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>        
+                <Route path="/login" element={<LoginSignup/>}/>
               </Routes>
             </div>
         </Router>
