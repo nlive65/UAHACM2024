@@ -1,0 +1,24 @@
+{
+  "name": "uahacm2024",
+  "version": "1.0.0",
+  "description": "acm 2024 hackathon about recycling",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlive65/UAHACM2024.git"
+  },
+  "keywords": [
+    "recycling",
+    "acm",
+    "hackathon"
+  ],
+  "author": "kalyn, gianna, nick, quinlyn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nlive65/UAHACM2024/issues"
+  },
+  "homepage": "https://github.com/nlive65/UAHACM2024#readme"
+}
