@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { GetCamera } from "./getCamera";
-import { Card, Container,Button,Offcanvas } from "react-bootstrap";
+import { Card, Container,Button} from "react-bootstrap";
 import axios from 'axios';
 import data from './secret.json';
 import { useEffect, useRef } from "react";
 
 const DrawRectInFrame = (inputs)=>{
-  if(inputs.bounds){
-    let baseElement;
+  let baseElement;
   if(inputs.stream){
     baseElement = document.getElementsByTagName('video')[0];
   }
@@ -15,29 +14,28 @@ const DrawRectInFrame = (inputs)=>{
     baseElement = document.getElementById('detectedImg');
   }
   if(inputs.bounds){
-    console.log('made it');
-    const canvases = inputs.bounds.predictions.map(element => {
-      console.log('here');
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext('2d');
-      canvas.height = element.height;
-      canvas.width = element.width;
-      ctx.drawImage(baseElement,0,0,element.x,element.y);
-      ctx.beginPath();
-      ctx.rect(element.x,element.y,element.width,element.height);
-      ctx.strokeStyle='black';
-      ctx.stroke();
-      canvas.style.zIndex = 2;
-      return canvas;
+    const img = inputs.bounds.data.image;
+    const scaleX = 640/img.width;
+    const scaleY = 640/img.height;
+    const prediction = inputs.bounds.data.predictions;
+    prediction.forEach(element => {
+      const rect = document.createElement('div');
+      rect.classList.add('bounding-box');
+      rect.style.position = 'absolute';
+      rect.style.left = `${element.x+ 0.5*element.width*scaleX}px`;
+      rect.style.bottom = `${baseElement.style.top+ element.y/scaleY }px`;
+      rect.style.width = `${element.width*scaleX}px`;
+      rect.style.height = `${element.height*scaleY}px`;
+      rect.style.border = '2px solid red'; // Adjust styling as needed
+      rect.style.zIndex =500;
+      baseElement.parentNode.appendChild(rect);
+
     });
   }
-  }
-  
 }
 
 
-const roboflowCall = (base64File)=>{
-  console.log(base64File);
+const roboflowCall = (base64File,callback)=>{
     if(base64File){
       axios({
         method: "POST",
@@ -52,38 +50,49 @@ const roboflowCall = (base64File)=>{
       })
       .then(function(response){
         console.log(response.data);
-        return(response);
+        callback(response);
       })
       .catch(function(error){
         console.log(error.message);
         console.log(base64File);
+        callback(null); 
       })
     }
-
 }
 
 function VideoUploadHandler(props){
   const [frame, setFrame] = useState(null);
+  const [isSnapshot,setSnapshot] = useState(null);
   const AIresponse= useRef(null);
   useEffect(()=>{
-    const response = roboflowCall(frame);
-    if(response){
-      AIresponse.current = response;
-    }
+    const response = roboflowCall(frame,(response)=>{
+      if(response){
+        AIresponse.current = response;
+        const inputs = {bounds: AIresponse.current, stream:props.stream}
+        DrawRectInFrame(inputs);
+      };
+    });
+    
   },[frame]);
 
   return(
     <Container>
-      <video id='webCamera'
-          autoPlay
+      {isSnapshot ? <img src={frame}  height={640} width={640}/> : <video id='webCamera'
+          autoPlay height={640} width={640}
           ref={video => {
             if (video) {
               video.srcObject = props.stream;
             }
           }}
-        />
+        />}
+      
         <br></br>
       <Button onClick={()=>{
+        if(isSnapshot){
+          setSnapshot(false);
+          return;
+        }
+        setSnapshot(true);
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         const videoElem = document.getElementsByTagName('video')[0];
@@ -97,9 +106,10 @@ function VideoUploadHandler(props){
                 setFrame(e.target.result);
             });
               reader.readAsDataURL(blob);
+        
             //storage.push(blob);
         });
-      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Take Snapshot</Button>
+      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}} value={isSnapshot ? "Retake" : "Take Snapshot"}></Button>
     </Container>
   )
 }
@@ -110,13 +120,15 @@ function ImgUploadHandler(props){
   const responseContent = useRef(null);
   const [base64File, setBase64File] = useState(null);
   useEffect(()=>{
-    const getResponse = async () =>{
-      const response = await roboflowCall(base64File);
-      responseContent.current = response;
-      console.log(responseContent.current);  
-    }
-    
-    getResponse();
+      roboflowCall(base64File,(response)=>{
+      if(response){
+        responseContent.current = response;
+        console.log(responseContent.current);
+        const inputs = {bounds: responseContent.current, stream:null}
+        DrawRectInFrame(inputs);
+      }
+      });
+      
   },[base64File]);
   
   return(
