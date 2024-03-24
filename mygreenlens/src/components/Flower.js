@@ -3,6 +3,7 @@ import './watering.css'; // Importing the CSS file
 import Placeholder from 'react-bootstrap/Placeholder';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 function FlowerGame() {
   const [flowerStage, setFlowerStage] = useState(0);
@@ -63,7 +64,7 @@ function FlowerGame() {
       <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
     </Row> 
       <div style={{ textAlign: 'center', marginTop: '90px' }}>
-        <button onClick={growFlower}>I recycled!</button>
+        <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={growFlower}>I recycled!</Button>
         <div>Recycled Items: {score}</div>
         <div>Stage: {stages[flowerStage].description}</div>
         {isWatering && <div className="watering-animation" />}
