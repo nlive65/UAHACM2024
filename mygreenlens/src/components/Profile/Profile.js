@@ -33,13 +33,11 @@ const Profile = ({score})=>{
         });
     }
 
-
-
     const fetchUserProfile = async () =>{
         try{
 
             if(auth.currentUser){
-                const profileRef = collection(db, 'profiles')
+                const profileRef = collection(db, 'users')
                 const querySnapshot = await getDocs(profileRef);
                 querySnapshot.forEach((doc)=>{
                     const userData = doc.data();

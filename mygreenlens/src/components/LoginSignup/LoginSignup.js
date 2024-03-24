@@ -12,7 +12,7 @@ import user_icon from '../assets/person.png'
 import email_icon from '../assets/email.png'
 import pw_icon from '../assets/password.png'
 import {auth} from "../../firebase";
-import {collection, doc, setDoc} from "firebase/firestore";
+import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
 
 
 const LoginSignup = ()=> {
@@ -20,14 +20,11 @@ const LoginSignup = ()=> {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [score, setScore] = useState("");
-
-    // const user = firebase.auth().currentUser;
-
+    const [name, setName] = useState("");
 
     const handleLogin = async () => {
         try {
-            if(email.length==0){
+            if(email.length==0 || password.length==0){
                 setErrorText("Enter Email");
                 return;
             }
@@ -40,8 +37,19 @@ const LoginSignup = ()=> {
     };
     const handleSignup = async () => {
         try {
+            // if(name.length ===0 || email.length===0|| password.length===0){
+            //     setErrorText("Enter name, email, and password");
+            //     return;
+            // }
             await createUserWithEmailAndPassword(auth, email, password);
-            // Redirect to profile page upon successful signup
+            const db= getFirestore();
+            const userRef = doc(collection(db, 'users'));
+            await setDoc(userRef, {
+                email: email,
+                password: password,
+                name: name
+            });
+
             navigate('/profile');
         } catch (error) {
             console.error('Error signing up:', error.message);
