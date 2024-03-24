@@ -18,6 +18,12 @@ function AutoLayoutVariableExample() {
       <h4> <b>
         Easy way to tell what is able to be recycled!
         </b></h4>
+      <h6>
+        When being asked to recycle, it is hard to know what can and can not be recycled. Our goal is 
+        to give people and easy way to tell when an item can be recycled.
+        We have created an AI model that can tell you if you can recycle that item. 
+        
+      </h6>
       <Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
       </Row>
       <div>
