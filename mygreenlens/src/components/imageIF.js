@@ -17,6 +17,9 @@ const DrawRectInFrame = (inputs)=>{
   let baseElement;
   if(inputs.stream){
     baseElement = document.getElementById('image');
+    if(!baseElement){
+      baseElement=document.getElementsByTagName('video')[0];
+    }
     if(inputs.bounds){
       const img = inputs.bounds.data.image;
       const scaleX = 640/img.width;
@@ -50,7 +53,7 @@ const DrawRectInFrame = (inputs)=>{
         const rect = document.createElement('div');
         rect.classList.add('bounding-box');
         rect.style.position = 'absolute';
-        rect.style.left = `${element.x}px`;
+        rect.style.left = `${element.x + element.width*0.5}px`;
         rect.style.bottom = `${element.y - element.height*0.25}px`;
         rect.style.width = `${element.width*scaleX}px`;
         rect.style.height = `${element.height*scaleY}px`;
@@ -92,6 +95,7 @@ const roboflowCall = (base64File,callback)=>{
 function VideoUploadHandler(props){
   const [frame, setFrame] = useState(null);
   const [isSnapshot,setSnapshot] = useState(null);
+  const [buttonTxt,setButtonTxt] = useState('Take Snapshot');
   const AIresponse= useRef(null);
   useEffect(()=>{
     const response = roboflowCall(frame,(response)=>{
@@ -104,8 +108,17 @@ function VideoUploadHandler(props){
     
   },[frame]);
 
+
+  useEffect(()=>{
+    if(isSnapshot){
+      setButtonTxt('Retake');
+    }
+    else{
+      setButtonTxt('Take Snapshot');
+    }
+  },[isSnapshot])
   return(
-    <Container style={{width: '700px'}}>
+    <Container>
       {isSnapshot ? <img src={frame}  height={640} width={640} id='image'/> : <video id='webCamera'
           autoPlay height={640} width={640}
           ref={video => {
@@ -140,7 +153,7 @@ function VideoUploadHandler(props){
         
             //storage.push(blob);
         });
-      }} style={{background:"#94aa5b", borderColor:"#94aa5b", height: '25px', width: '75px'}} value={isSnapshot ? "Retake" : "Take Snapshot"}></Button>
+      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}} >{buttonTxt}</Button>
     </Container>
   )
 }
@@ -205,7 +218,7 @@ export default function VideoDetector() {
   }
   return (
     <Container>
-      <Card style={{ width: '36rem' }}>
+      <Card style={{width:'700px'}}>
         <Card.Title> <b>Demeter Recyclable Image Detection</b></Card.Title>
         <Card.Body>
         {error ? (
