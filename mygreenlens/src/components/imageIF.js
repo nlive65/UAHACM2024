@@ -5,6 +5,37 @@ import axios from 'axios';
 import data from './secret.json';
 import { useEffect, useRef } from "react";
 
+const DrawRectInFrame = (inputs)=>{
+  if(inputs.bounds){
+    let baseElement;
+  if(inputs.stream){
+    baseElement = document.getElementsByTagName('video')[0];
+  }
+  else{
+    baseElement = document.getElementById('detectedImg');
+  }
+  if(inputs.bounds){
+    console.log('made it');
+    const canvases = inputs.bounds.predictions.map(element => {
+      console.log('here');
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext('2d');
+      canvas.height = element.height;
+      canvas.width = element.width;
+      ctx.drawImage(baseElement,0,0,element.x,element.y);
+      ctx.beginPath();
+      ctx.rect(element.x,element.y,element.width,element.height);
+      ctx.strokeStyle='black';
+      ctx.stroke();
+      canvas.style.zIndex = 2;
+      return canvas;
+    });
+  }
+  }
+  
+}
+
+
 const roboflowCall = (base64File)=>{
   console.log(base64File);
     if(base64File){
@@ -21,14 +52,11 @@ const roboflowCall = (base64File)=>{
       })
       .then(function(response){
         console.log(response.data);
-        
+        return(response);
       })
       .catch(function(error){
         console.log(error.message);
         console.log(base64File);
-        return(
-          <></>
-        );
       })
     }
 
@@ -36,13 +64,17 @@ const roboflowCall = (base64File)=>{
 
 function VideoUploadHandler(props){
   const [frame, setFrame] = useState(null);
+  const AIresponse= useRef(null);
   useEffect(()=>{
-    roboflowCall(frame);
+    const response = roboflowCall(frame);
+    if(response){
+      AIresponse.current = response;
+    }
+  },[frame]);
 
-  },[frame])
   return(
     <Container>
-      <video
+      <video id='webCamera'
           autoPlay
           ref={video => {
             if (video) {
@@ -67,19 +99,24 @@ function VideoUploadHandler(props){
               reader.readAsDataURL(blob);
             //storage.push(blob);
         });
-        
       }} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Take Snapshot</Button>
     </Container>
   )
 }
 
 
-function ImgUploadHandler(){
+function ImgUploadHandler(props){
   const [selectedImage, setSelectedImage] = useState(null);
-  const [responseContent, setResponseContent] = useState(null);
+  const responseContent = useRef(null);
   const [base64File, setBase64File] = useState(null);
   useEffect(()=>{
-    roboflowCall(base64File);
+    const getResponse = async () =>{
+      const response = await roboflowCall(base64File);
+      responseContent.current = response;
+      console.log(responseContent.current);  
+    }
+    
+    getResponse();
   },[base64File]);
   
   return(
@@ -89,7 +126,8 @@ function ImgUploadHandler(){
           Upload Picture
         </Card.Header>
         <Card.Body>
-        {selectedImage && (<img src={selectedImage} height={640} width={640}/>)}
+        {selectedImage && (<img src={selectedImage} id='detectedImg' height={640} width={640}/> 
+        )}
         <br></br>
         <input type="file" onChange={(event)=>{
           setSelectedImage(null);
@@ -123,12 +161,13 @@ export default function VideoDetector() {
         <Card.Title>Demeter Recyclable Image Detection</Card.Title>
         <Card.Body>
         {error ? (
-          <ImgUploadHandler />
+          <ImgUploadHandler stream={null}/>
       ) : (
           <VideoUploadHandler stream={stream}/>
       )}
         </Card.Body>
       </Card>
+      <p>Any object that is outlined in a rectangle is recyclable</p>
       <p>Please note that what can be directly recycled depends on area and size of the item. When in doubt, always check with local recycling centers:</p>
       <Button onClick={()=>window.open("https://search.earth911.com/")} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Find your Center</Button>
     </Container>
