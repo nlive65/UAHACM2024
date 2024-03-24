@@ -157,8 +157,8 @@ export default function VideoDetector() {
   }
   return (
     <Container>
-      <Card>
-        <Card.Title>Demeter Recyclable Image Detection</Card.Title>
+      <Card style={{ width: '36rem' }}>
+        <Card.Title> <b>Demeter Recyclable Image Detection</b></Card.Title>
         <Card.Body>
         {error ? (
           <ImgUploadHandler stream={null}/>
