@@ -57,7 +57,7 @@ const LoginSignup = ()=> {
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
             <div className='header'>
                 <div className='text'>Login</div>
                 <div className='underline'></div>

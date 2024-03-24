@@ -56,7 +56,7 @@ function FlowerGame() {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
       <h1><b>Click the Button Every Time You Recycle!</b></h1>
       <h4>This is how you can track how many items you have recycled. Each time you 
         recycle four times, you grow a flower for your garden!

@@ -217,7 +217,7 @@ export default function VideoDetector() {
 
   }
   return (
-    <Container>
+    <Container style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
       <Card style={{width:'700px'}}>
         <Card.Title> <b>Demeter Recyclable Image Detection</b></Card.Title>
         <Card.Body>

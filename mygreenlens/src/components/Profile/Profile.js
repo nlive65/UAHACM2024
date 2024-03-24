@@ -87,7 +87,7 @@ const Profile = ({score})=>{
 
 
     return (
-        <div className="user-card">
+        <div className="user-card" style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
             <div className="gradient">
                 <div className="profile-down">
                     <img src={profile_icon} alt="profile icon"/>
