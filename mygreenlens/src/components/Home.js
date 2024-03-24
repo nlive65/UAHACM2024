@@ -7,16 +7,17 @@ import Placeholder from 'react-bootstrap/Placeholder';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 
+
 function AutoLayoutVariableExample() {
   return (
-    <Container>
+    <Container >
       <Row className="justify-content-md-center">
-      <h1>
+      <h1 className="display-2"> <b>
         Green Lens
-      </h1>
-      <h2>
-        Example heading
-      </h2>
+        </b> </h1>
+      <h4> <b>
+        Easy way to tell what is able to be recycled!
+        </b></h4>
       <Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
       </Row>
       <div>
@@ -29,40 +30,49 @@ function AutoLayoutVariableExample() {
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/66/23/45/360_F_566234573_0wRtGNCoV93vm3nCcBuRDIEJOq4BXlQ2.jpg" />
         <Card.Body>
-          <Card.Title>Why is Recycling Important?</Card.Title>
+          <Card.Title><b>Why is Recycling Important?</b></Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            Recycling is a way that individual people can help reduce waste
+            and help the enviroment. The more people who regularly recycle can help
+            make a large impact on saving the Earth. Below are resources that explain exactly 
+            how important recycling is for the enviroment. 
           </Card.Text>
-          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.brysonrecycling.org/recycling/why-recycle/", '_blank')}>Website</Button>
+          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.brysonrecycling.org/recycling/why-recycle/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
 
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://waste-management-world.com/imager/media/wasteManagementWorld/3820706/AdobeStock_571968683_428fd902f4247199467725e7eccf1673.jpeg " />
         <Card.Body>
-          <Card.Title>Tips for Recycling</Card.Title>
+          <Card.Title><b>Tips for Recycling</b></Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+           When recycling, it is important to follow the rules of 
+           the recycling center. When different materials are recycled they 
+           have to be sorted so making sure they can be properly sorted 
+           is just as important as the actual act of recycling. Below are resources that 
+           explain how you can recycle better. 
           </Card.Text>
-          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.earthday.org/7-tips-to-recycle-better/", '_blank')}>Website</Button>
+          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.earthday.org/7-tips-to-recycle-better/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/55/33/01/360_F_555330199_GU19A8qbz8DAlTqjw2u6ZCTqkn5yfGzS.jpg" />
         <Card.Body>
-          <Card.Title>What Happens if We Don't Recycle?</Card.Title>
+          <Card.Title><b>What Happens if We Don't Recycle?</b></Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            If people stopped recycling then not just the landfills will be affected.
+            Trash will be displaced into bodies of water or in natural reserved.
+            Below are resources that explain in more detail the effects not recycling 
+            would have on the enviroment. 
           </Card.Text>
-          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://closedlooprecycling.us/the-negative-effects-of-not-recycling/", '_blank')}>Website</Button>
+          <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://closedlooprecycling.us/the-negative-effects-of-not-recycling/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
     </div>
     <div>
     <Row> <Col>
+    <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
+    </Row>
     <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://docs.google.com/document/d/1zuIPsxIfFrgpeYNWzr-r1z-vn241xfTPDqkUPoGp2gQ/edit", '_blank')}>Image Sources</Button>
     </Col></Row>
     </div>
