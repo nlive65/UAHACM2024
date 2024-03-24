@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './watering.css'; // Importing the CSS file
 import Placeholder from 'react-bootstrap/Placeholder';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import {collection,getDoc, updateDoc, doc, setDoc} from "firebase/firestore";
+import app,{ db, auth } from '../firebase';
+
 
 function FlowerGame() {
   const [flowerStage, setFlowerStage] = useState(0);
@@ -23,11 +24,11 @@ function FlowerGame() {
     { image: 'https://pngfre.com/wp-content/uploads/sunflower-png-image-from-pngfre-13-743x1024.png', name: 'Sunflower' },
     { image: 'https://i.pinimg.com/originals/06/e9/ac/06e9ac4858945e0a81e867b219d693b2.png', name: 'Tulip' },
     { image: 'https://static.vecteezy.com/system/resources/previews/008/505/482/original/daisy-flower-clipart-png.png', name: 'Daisy' },
-    { image: 'https://images.vexels.com/media/users/3/240372/isolated/preview/ce959158fdc4ddf831a49e1524e52242-pink-flower-stem-nature.png', name: 'Rose' },
     // Add more flowers as needed
   ];
 
-  const growFlower = () => {
+  const growFlower = async () => {
+    let newScore = score;
     if (flowerStage < stages.length - 1) {
       setFlowerStage(prevStage => prevStage + 1);
       setScore(prevScore => prevScore + 1);
@@ -40,20 +41,47 @@ function FlowerGame() {
     } else {
       // Add a random flower to the garden if it has reached full bloom
       const randomFlowerIndex = Math.floor(Math.random() * flowers.length);
-      const newFlower = { image: flowers[randomFlowerIndex].image, name: flowers[randomFlowerIndex].name };
+      const newFlower = {image: flowers[randomFlowerIndex].image, name: flowers[randomFlowerIndex].name};
       setFlowersGrown(prevFlowers => [...prevFlowers, newFlower]);
-      
+
       // Reset the flower stage if it has reached full bloom
       setFlowerStage(0);
       setScore(prevScore => prevScore + 1);
       setIsWatering(true);
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(userRef, {score: score});
 
       // Turn off watering animation after 1 second
       setTimeout(() => {
         setIsWatering(false);
       }, 1000);
     }
+
   };
+
+  const updateScoreFirestore = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userRef);
+        if(userDoc.exists()){
+          const userData = userDoc.data();
+        }
+        await setDoc(userRef, { score: score }, { merge: true });
+      }
+    } catch (error) {
+      console.error('Error updating score in Firestore:', error.message);
+    }
+  };
+
+  useEffect(()=>
+  {
+    updateScoreFirestore();
+  }, [score]);
+
+
 
   return (
     <div style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
@@ -64,7 +92,7 @@ function FlowerGame() {
       <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
     </Row> 
       <div style={{ textAlign: 'center', marginTop: '90px' }}>
-        <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={growFlower}>I recycled!</Button>
+        <button onClick={growFlower}>I recycled!</button>
         <div>Recycled Items: {score}</div>
         <div>Stage: {stages[flowerStage].description}</div>
         {isWatering && <div className="watering-animation" />}
