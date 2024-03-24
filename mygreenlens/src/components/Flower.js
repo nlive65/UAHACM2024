@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './watering.css'; // Importing the CSS file
 import Placeholder from 'react-bootstrap/Placeholder';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import {collection,getDocs, updateDoc, doc} from "firebase/firestore";
+import app,{ db, auth } from '../firebase';
+
 
 function FlowerGame() {
   const [flowerStage, setFlowerStage] = useState(0);
@@ -25,7 +28,8 @@ function FlowerGame() {
     // Add more flowers as needed
   ];
 
-  const growFlower = () => {
+  const growFlower = async () => {
+    let newScore = score;
     if (flowerStage < stages.length - 1) {
       setFlowerStage(prevStage => prevStage + 1);
       setScore(prevScore => prevScore + 1);
@@ -38,9 +42,9 @@ function FlowerGame() {
     } else {
       // Add a random flower to the garden if it has reached full bloom
       const randomFlowerIndex = Math.floor(Math.random() * flowers.length);
-      const newFlower = { image: flowers[randomFlowerIndex].image, name: flowers[randomFlowerIndex].name };
+      const newFlower = {image: flowers[randomFlowerIndex].image, name: flowers[randomFlowerIndex].name};
       setFlowersGrown(prevFlowers => [...prevFlowers, newFlower]);
-      
+
       // Reset the flower stage if it has reached full bloom
       setFlowerStage(0);
       setScore(prevScore => prevScore + 1);
@@ -51,7 +55,23 @@ function FlowerGame() {
         setIsWatering(false);
       }, 1000);
     }
+
+
   };
+
+  const updateScoreFirestore = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, { score: score });
+      }
+    } catch (error) {
+      console.error('Error updating score in Firestore:', error.message);
+    }
+  };
+
+  updateScoreFirestore();
 
   return (
     <div>

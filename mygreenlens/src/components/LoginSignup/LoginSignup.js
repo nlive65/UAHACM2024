@@ -6,8 +6,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import 'firebase/auth'
 
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
-
 import user_icon from '../assets/person.png'
 import email_icon from '../assets/email.png'
 import pw_icon from '../assets/password.png'
@@ -21,6 +19,7 @@ const LoginSignup = ()=> {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [score, setScore] = useState("");
 
     const handleLogin = async () => {
         try {
@@ -47,7 +46,8 @@ const LoginSignup = ()=> {
             await setDoc(userRef, {
                 email: email,
                 password: password,
-                name: name
+                name: name,
+                score: score
             });
 
             navigate('/profile');
@@ -73,33 +73,40 @@ const LoginSignup = ()=> {
             <div className='inputs'>
                 {<div className="input">
                     <img src={user_icon} alt=""/>
-                    <input placeholder="Name" type="text" />
+                    <input value={name} type="name" placeholder="Name" type="text"
+                           onChange={(e) => {
+                               setName(e.target.value)
+                               setErrorText("")
+                           }}/>
+
                 </div>}
 
                 <div className='input'>
                     <img src={email_icon} alt=""/>
                     <input value={email} type="email" placeholder="Email Id"
-                    onChange={(e)=>{
-                        setEmail(e.target.value)
-                        setErrorText("")
-                    }}/>
+                           onChange={(e) => {
+                               setEmail(e.target.value)
+                               setErrorText("")
+                           }}/>
 
                 </div>
                 <div className='input'>
                     <img src={pw_icon} alt=""/>
                     <input type="password" placeholder="Password" value={password}
-                           onChange={(e)=>{
+                           onChange={(e) => {
                                setPassword(e.target.value)
                                setErrorText("")
-                    }}/>
+                           }}/>
                 </div>
+
             </div>
 
-            {<div className="forgot_password" onClick={()=>handleForgotPassword()}>Forgot Password? <span>Click Here!</span></div>}
+            {<div className="forgot_password" onClick={() => handleForgotPassword()}>Forgot
+                Password? <span>Click Here!</span></div>}
 
             <div className="submit_container">
                 <div className={"submit"} onClick={() => handleSignup()}>Sign Up</div>
-                <div className={"submit"} onClick={()=>handleLogin()}>Login</div>
+                <div className={"submit"} onClick={() => handleLogin()}>Login</div>
             </div>
         </div>
 
