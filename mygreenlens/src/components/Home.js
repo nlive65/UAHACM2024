@@ -25,7 +25,7 @@ function AutoLayoutVariableExample() {
       </h6>
       </Row>
       <Row>
-      <Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
+      <Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b", width: '64rem'}} xs={12} size="lg" />
       </Row>
       <div>
     <Row> <Col>
@@ -34,31 +34,32 @@ function AutoLayoutVariableExample() {
 
     </div>
       <div className="d-flex justify-content-around">
-      <div class="col-sm-4">
+      <div class="col-lg-4" style={{paddingLeft: '20px', paddingRight: '20px'}}>
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/66/23/45/360_F_566234573_0wRtGNCoV93vm3nCcBuRDIEJOq4BXlQ2.jpg" />
         <Card.Body>
           <Card.Title><b>Why is Recycling Important?</b></Card.Title>
           <Card.Text>
-            Recycling is a way that individual people can help reduce waste
-            and help the enviroment. The more people who regularly recycle can help
-            make a large impact on saving the Earth. Below are resources that explain exactly 
-            how important recycling is for the enviroment. 
+          Recycling is a way that individual people can help reduce waste
+           and help the environment. The more people who regularly recycle can help
+           make a large impact on saving the Earth. Below are resources that explain exactly
+           how important recycling is for the environment.
+
           </Card.Text>
           <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.brysonrecycling.org/recycling/why-recycle/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
       </div>
-
-      <div class="col-sm-4">
+    
+      <div class="col-lg-4" style={{paddingLeft: '20px', paddingRight: '20px'}}>
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://waste-management-world.com/imager/media/wasteManagementWorld/3820706/AdobeStock_571968683_428fd902f4247199467725e7eccf1673.jpeg " />
         <Card.Body>
           <Card.Title><b>Tips for Recycling</b></Card.Title>
           <Card.Text>
            When recycling, it is important to follow the rules of 
-           the recycling center. When different materials are recycled they 
-           have to be sorted so making sure they can be properly sorted 
+           the recycling in your city. When different materials are recycled they are 
+           sorted so making sure the can be properly sorted and recycled. This
            is just as important as the actual act of recycling. Below are resources that 
            explain how you can recycle better. 
           </Card.Text>
@@ -66,16 +67,16 @@ function AutoLayoutVariableExample() {
         </Card.Body>
       </Card>
       </div>
-      <div class="col-sm-4">
+      <div class="col-lg-4" style={{paddingLeft: '20px', paddingRight: '20px'}}>
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/55/33/01/360_F_555330199_GU19A8qbz8DAlTqjw2u6ZCTqkn5yfGzS.jpg" />
         <Card.Body>
           <Card.Title><b>What Happens if We Don't Recycle?</b></Card.Title>
           <Card.Text>
-            If people stopped recycling then not just the landfills will be affected.
-            Trash will be displaced into bodies of water or in natural reserved.
-            Below are resources that explain in more detail the effects not recycling 
-            would have on the enviroment. 
+          If people stopped recycling then not just the landfills will be affected.
+           Trash will be displaced into bodies of water or in natural reserves which impact humans and animals.
+           Below are resources that explain in more detail the effects not recycling
+           would have on the environment.
           </Card.Text>
           <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://closedlooprecycling.us/the-negative-effects-of-not-recycling/", '_blank')}>Resource</Button>
         </Card.Body>
@@ -84,7 +85,7 @@ function AutoLayoutVariableExample() {
     </div>
     <div>
     <Row> <Col>
-    <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
+    <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b", width: '64rem'}} xs={12} size="lg" />
     </Row>
     <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://docs.google.com/document/d/1zuIPsxIfFrgpeYNWzr-r1z-vn241xfTPDqkUPoGp2gQ/edit", '_blank')}>Image Sources</Button>
     </Col></Row>
