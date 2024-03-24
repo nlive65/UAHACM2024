@@ -228,8 +228,8 @@ export default function VideoDetector() {
       )}
         </Card.Body>
       </Card>
-      <p>Any object that is outlined in a rectangle is recyclable</p>
-      <p>Please note that what can be directly recycled depends on area and size of the item. When in doubt, always check with local recycling centers:</p>
+      <p><b>Any object that is outlined in a rectangle is recyclable</b></p>
+      <p><div class="col-xl-12" style={{width: '64rem'}}>Please note that what can be directly recycled depends on area and size of the item. When in doubt, always check with local recycling centers:</div></p>
       <Button onClick={()=>window.open("https://search.earth911.com/")} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Find your Center</Button>
     </Container>
   );
