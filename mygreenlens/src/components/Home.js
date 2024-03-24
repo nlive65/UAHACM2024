@@ -16,14 +16,15 @@ function AutoLayoutVariableExample() {
         Green Lens
         </b> </h1>
       <h4> <b>
-        Easy way to tell what is able to be recycled!
+        Easy way to tell what is Recyclable!
         </b></h4>
       <h6>
         When being asked to recycle, it is hard to know what can and can not be recycled. Our goal is 
-        to give people and easy way to tell when an item can be recycled.
+        to give people an easy way to tell when an item can be recycled.
         We have created an AI model that can tell you if you can recycle that item. 
-        
       </h6>
+      </Row>
+      <Row>
       <Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
       </Row>
       <div>
@@ -33,6 +34,7 @@ function AutoLayoutVariableExample() {
 
     </div>
       <div className="d-flex justify-content-around">
+      <div class="col-sm-4">
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/66/23/45/360_F_566234573_0wRtGNCoV93vm3nCcBuRDIEJOq4BXlQ2.jpg" />
         <Card.Body>
@@ -46,7 +48,9 @@ function AutoLayoutVariableExample() {
           <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.brysonrecycling.org/recycling/why-recycle/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
+      </div>
 
+      <div class="col-sm-4">
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://waste-management-world.com/imager/media/wasteManagementWorld/3820706/AdobeStock_571968683_428fd902f4247199467725e7eccf1673.jpeg " />
         <Card.Body>
@@ -61,6 +65,8 @@ function AutoLayoutVariableExample() {
           <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://www.earthday.org/7-tips-to-recycle-better/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
+      </div>
+      <div class="col-sm-4">
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src="https://t4.ftcdn.net/jpg/05/55/33/01/360_F_555330199_GU19A8qbz8DAlTqjw2u6ZCTqkn5yfGzS.jpg" />
         <Card.Body>
@@ -74,6 +80,7 @@ function AutoLayoutVariableExample() {
           <Button style={{background:"#94aa5b", borderColor:"#94aa5b"}} onClick={() => window.open("https://closedlooprecycling.us/the-negative-effects-of-not-recycling/", '_blank')}>Resource</Button>
         </Card.Body>
       </Card>
+    </div>
     </div>
     <div>
     <Row> <Col>
