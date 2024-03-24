@@ -19,7 +19,7 @@ export default class NavBarComp extends Component {
           <Router>
             <div>
                 <Navbar className="custom-navbar" expand="lg">
-                    <Navbar.Brand href="/" style={{fontWeight: 'bold', paddingLeft: '20'}}>Green Lens</Navbar.Brand>
+                    <Navbar.Brand href="/" style={{fontWeight: 'bold', paddingLeft: '30'}}>Green Lens</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
