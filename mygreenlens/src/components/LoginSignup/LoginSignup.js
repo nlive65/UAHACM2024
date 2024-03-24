@@ -24,14 +24,7 @@ const LoginSignup = ()=> {
 
     // const user = firebase.auth().currentUser;
 
-    async function fetchCurrentUser(){}
-    if(getAuth().currentUser){
-        const recycler = collection(firestore, 'recyclers');
-        const user = querySnapshot.docs.find((user))
-        co
 
-
-    }
     const handleLogin = async () => {
         try {
             if(email.length==0){
@@ -54,6 +47,14 @@ const LoginSignup = ()=> {
             console.error('Error signing up:', error.message);
         }
     };
+    const handleForgotPassword = async() =>{
+        try{
+            navigate('/ForgotPassword')
+
+        }catch(error){
+            console.error('Error signing up:', error.message);
+        }
+    }
 
     return (
         <div className='container'>
@@ -86,7 +87,7 @@ const LoginSignup = ()=> {
                 </div>
             </div>
 
-            {<div className="forgot_password" onClick={()=>{}}>Forgot Password? <span>Click Here!</span></div>}
+            {<div className="forgot_password" onClick={()=>handleForgotPassword()}>Forgot Password? <span>Click Here!</span></div>}
 
             <div className="submit_container">
                 <div className={"submit"} onClick={() => handleSignup()}>Sign Up</div>

@@ -1,49 +1,106 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './Profile.css';
 
 import profile_icon from '../assets/profile_icon.png'
-import {collection, addDoc} from "firebase/firestore";
+import {collection,getDocs, updateDoc, doc} from "firebase/firestore";
+import app,{ db, auth } from '../../firebase';
+
 import {} from "firebase/firestore"
+import {getAuth} from "firebase/auth";
+import logout_Icon from '../assets/logout_icon.png'
+import {useNavigate} from "react-router-dom";
 
-const Profile = ()=>{
-    const [action,setAction]= useState("UpdateSettings");
-    // auth.currentUser.uid
+const Profile = ({score})=>{
+    const [action,setAction]= useState("");
+    const [userProfile, setUserProfile]= useState("");
+    const [newName, setNewName]= useState("");
+    const [password, setPassword]= useState("");
+    const [name, setName]= useState("");
+    const [email, setEmail]= useState("")
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userId, setUserId] =useState("");
 
-    return(
-       <div className="container">
-           <div className="row">
-               <div className="col col-md-9 col-lg-7 col-xl-5">
-                   <div className="card">
-                       <div class="card-body">
-                           <div className="flex-shrink-0">
-                               <img src={profile_icon} alt="profile icon" class="image"/>
-                           </div>
-                           <div className="">
+    const navigate = useNavigate();
 
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           </div>
+    const buttonNav=[
+        { name: 'Sign Out', icon:logout_Icon, clickHandler:handleSignout, disability:false}
+    ]
 
-
-          {/*<div className='counter'>*/}
-          {/*    <div className="row">*/}
-          {/*        <div className="col-6 col-lg-3">*/}
-          {/*            <h6 className="count h2"></h6>*/}
-          {/*            <p>Plastic</p>*/}
-          {/*        </div>*/}
-          {/*        <div className="col-6 col-lg-3">*/}
-          {/*            <h6 className="count h2"></h6>*/}
-          {/*            <p>Paper</p>*/}
-          {/*        </div>*/}
-          {/*    </div>*/}
-
-          {/*</div>*/}
-
-       </div>
+    async function handleSignout(){
+        auth.signOut().then(()=>{
+            navigate('/login');
+        }, () => { console.error("Could not sign out");
+        });
+    }
 
 
+
+    const fetchUserProfile = async () =>{
+        try{
+
+            if(auth.currentUser){
+                const profileRef = collection(db, 'profiles')
+                const querySnapshot = await getDocs(profileRef);
+                querySnapshot.forEach((doc)=>{
+                    const userData = doc.data();
+                    if(userData.email=== auth.currentUser.email){
+                        setEmail(userData.email);
+                        setName(userData.name);
+                    }
+                });
+            }
+        }catch(error){
+            console.error('Error fetching user profile:', error.message);
+        }
+    };
+
+
+   const handleNameChange = (e)=> {
+       setNewName(e.target.value);
+   }
+
+   // const updateProfile= async () =>{
+   //     try{
+   //         const docRef = db.collection('users').doc(currentUser.uid);
+   //         const doc= await docRef.get();
+   //         if(!doc.exists){
+   //             await docRef.set({
+   //                 email: currentUser.email,
+   //                 name: currentUser.name,
+   //
+   //             })
+   //         }
+   //         // await updateDoc(doc(db,'users', userProfile.id), {
+   //         //     name: newName,
+   //         // });
+   //         // setUserProfile({...userProfile, name: newName});
+   //         // setNewName("");
+   //
+   //     }catch(error){
+   //         console.error('Error updating profile:', error.message);
+   //     }
+   //
+   // }
+   //  // if(!userProfile){
+   //  //     return <div>Loading...</div>;
+   //  // }
+
+
+    return (
+        <div className="user-card">
+            <div className="gradient">
+                <div className="profile-down">
+                    <img src={profile_icon} alt="profile icon"/>
+                    <div className="profile-title">Name: {name}</div>
+                    <div className="profile-title">Email: {email}</div>
+                </div>
+                <div className="signout_container">
+                    <div className="signout" onClick={handleSignout}>
+                        Sign Out!
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

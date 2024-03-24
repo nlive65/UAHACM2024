@@ -1,34 +1,41 @@
-.container{
-    padding: 10px 0;
-    margin-top: 20px;
-    background-color: #fff;
-    height: 220px;
-    display: flex;
+
+.user-card{
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+    padding: 20px;
+}
+.gradient{
+    background-image: linear-gradient(to bottom, #FFFDD0, #f0f0f0);
 
 }
-.row{
+.profile-down{
+    margin-top: 20px;
+}
+profile-title{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+.signout_container{
     display: flex;
+    gap: 30px;
+    height: 25px;
+    margin: auto;
+}
+
+.signout{
+    display: flex;
+    justify-items: left;
     justify-content: center;
     align-items: center;
-    height: 100px;
-}
-
-.card{
-    border-radius: 15px;
-}
-.card-body{
-    padding: 24px;
-
-}
-.image{
-    width: 180px;
-    border-radius: 10px;
-
-}
-.counter{
-    padding: 22px 20px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(25,31,0,125);
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    background: #94aa5b;
+    border-radius: 50px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
 
 }
