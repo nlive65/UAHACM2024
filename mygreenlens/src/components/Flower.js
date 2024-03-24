@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './watering.css'; // Importing the CSS file
+import Placeholder from 'react-bootstrap/Placeholder';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function FlowerGame() {
   const [flowerStage, setFlowerStage] = useState(0);
@@ -52,10 +55,15 @@ function FlowerGame() {
 
   return (
     <div>
-      <h1>Click the Button Every Time You Recycle!</h1>
+      <h1><b>Click the Button Every Time You Recycle!</b></h1>
+      <h4>This is how you can track how many items you have recycled. Each time you grow a 
+        recycle four times you grow a flower for you garden!
+      </h4>
+      <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
+    </Row> 
       <div style={{ textAlign: 'center', marginTop: '90px' }}>
-        <button onClick={growFlower}>Grow Flower</button>
-        <div>Things Recycled: {score}</div>
+        <button onClick={growFlower}>I recycled!</button>
+        <div>Recycled Items: {score}</div>
         <div>Stage: {stages[flowerStage].description}</div>
         {isWatering && <div className="watering-animation" />}
       </div>
