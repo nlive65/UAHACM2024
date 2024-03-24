@@ -1,43 +1,73 @@
 import React, { useState } from "react";
 import { GetCamera } from "./getCamera";
-import { Card, Container,Button,Offcanvas } from "react-bootstrap";
+import { Card, Container,Button} from "react-bootstrap";
 import axios from 'axios';
 import data from './secret.json';
 import { useEffect, useRef } from "react";
 
+
+function removeBoxes(parentNode){
+  const currBoxes = parentNode.querySelectorAll('.bounding-box');
+    currBoxes.forEach(element=>{
+      parentNode.removeChild(element);
+    });
+}
+
 const DrawRectInFrame = (inputs)=>{
-  if(inputs.bounds){
-    let baseElement;
+  let baseElement;
   if(inputs.stream){
-    baseElement = document.getElementsByTagName('video')[0];
+    baseElement = document.getElementById('image');
+    if(!baseElement){
+      baseElement=document.getElementsByTagName('video')[0];
+    }
+    if(inputs.bounds){
+      const img = inputs.bounds.data.image;
+      const scaleX = 640/img.width;
+      const scaleY = 640/img.height;
+      const prediction = inputs.bounds.data.predictions;
+      const parentNode = baseElement.parentNode;
+      removeBoxes(parentNode);
+      prediction.forEach(element => {
+        const rect = document.createElement('div');
+        rect.classList.add('bounding-box');
+        rect.style.position = 'absolute';
+        rect.style.left = `${element.x - element.width}px`;
+        rect.style.bottom = `${element.y - element.height*0.25}px`;
+        rect.style.width = `${element.width*scaleX}px`;
+        rect.style.height = `${element.height*scaleY}px`;
+        rect.style.border = '2px solid red'; // Adjust styling as needed
+        rect.style.zIndex =500;
+        baseElement.parentNode.appendChild(rect);
+      });
+    }
   }
   else{
-    baseElement = document.getElementById('detectedImg');
-  }
-  if(inputs.bounds){
-    console.log('made it');
-    const canvases = inputs.bounds.predictions.map(element => {
-      console.log('here');
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext('2d');
-      canvas.height = element.height;
-      canvas.width = element.width;
-      ctx.drawImage(baseElement,0,0,element.x,element.y);
-      ctx.beginPath();
-      ctx.rect(element.x,element.y,element.width,element.height);
-      ctx.strokeStyle='black';
-      ctx.stroke();
-      canvas.style.zIndex = 2;
-      return canvas;
-    });
-  }
+    baseElement = document.getElementById('detectedImg');if(inputs.bounds){
+      const img = inputs.bounds.data.image;
+      const scaleX = 640/img.width;
+      const scaleY = 640/img.height;
+      const prediction = inputs.bounds.data.predictions;
+      const parentNode = baseElement.parentNode;
+      removeBoxes(parentNode);
+      prediction.forEach(element => {
+        const rect = document.createElement('div');
+        rect.classList.add('bounding-box');
+        rect.style.position = 'absolute';
+        rect.style.left = `${element.x + element.width*0.5}px`;
+        rect.style.bottom = `${element.y - element.height*0.25}px`;
+        rect.style.width = `${element.width*scaleX}px`;
+        rect.style.height = `${element.height*scaleY}px`;
+        rect.style.border = '2px solid red'; // Adjust styling as needed
+        rect.style.zIndex =500;
+        baseElement.parentNode.appendChild(rect);
+      });
+    }
   }
   
 }
 
 
-const roboflowCall = (base64File)=>{
-  console.log(base64File);
+const roboflowCall = (base64File,callback)=>{
     if(base64File){
       axios({
         method: "POST",
@@ -52,38 +82,61 @@ const roboflowCall = (base64File)=>{
       })
       .then(function(response){
         console.log(response.data);
-        return(response);
+        callback(response);
       })
       .catch(function(error){
         console.log(error.message);
         console.log(base64File);
+        
       })
     }
-
 }
 
 function VideoUploadHandler(props){
   const [frame, setFrame] = useState(null);
+  const [isSnapshot,setSnapshot] = useState(null);
+  const [buttonTxt,setButtonTxt] = useState('Take Snapshot');
   const AIresponse= useRef(null);
   useEffect(()=>{
-    const response = roboflowCall(frame);
-    if(response){
-      AIresponse.current = response;
-    }
+    const response = roboflowCall(frame,(response)=>{
+      if(response){
+        AIresponse.current = response;
+        const inputs = {bounds: AIresponse.current, stream:props.stream}
+        DrawRectInFrame(inputs);
+      };
+    });
+    
   },[frame]);
 
+
+  useEffect(()=>{
+    if(isSnapshot){
+      setButtonTxt('Retake');
+    }
+    else{
+      setButtonTxt('Take Snapshot');
+    }
+  },[isSnapshot])
   return(
     <Container>
-      <video id='webCamera'
-          autoPlay
+      {isSnapshot ? <img src={frame}  height={640} width={640} id='image'/> : <video id='webCamera'
+          autoPlay height={640} width={640}
           ref={video => {
             if (video) {
               video.srcObject = props.stream;
             }
           }}
-        />
+        />}
+      
         <br></br>
-      <Button onClick={()=>{
+      <Button  onClick={()=>{
+        if(isSnapshot){
+          setSnapshot(false);
+          const parentNode =document.baseElement = document.getElementById('image').parentNode;
+          removeBoxes(parentNode);
+          return;
+        }
+        setSnapshot(true);
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         const videoElem = document.getElementsByTagName('video')[0];
@@ -97,9 +150,10 @@ function VideoUploadHandler(props){
                 setFrame(e.target.result);
             });
               reader.readAsDataURL(blob);
+        
             //storage.push(blob);
         });
-      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Take Snapshot</Button>
+      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}} >{buttonTxt}</Button>
     </Container>
   )
 }
@@ -110,13 +164,15 @@ function ImgUploadHandler(props){
   const responseContent = useRef(null);
   const [base64File, setBase64File] = useState(null);
   useEffect(()=>{
-    const getResponse = async () =>{
-      const response = await roboflowCall(base64File);
-      responseContent.current = response;
-      console.log(responseContent.current);  
-    }
-    
-    getResponse();
+      roboflowCall(base64File,(response)=>{
+      if(response){
+        responseContent.current = response;
+        console.log(responseContent.current);
+        const inputs = {bounds: responseContent.current, stream:null}
+        DrawRectInFrame(inputs);
+      }
+      });
+      
   },[base64File]);
   
   return(
@@ -132,15 +188,20 @@ function ImgUploadHandler(props){
         <input type="file" onChange={(event)=>{
           setSelectedImage(null);
           const file = event.target.files[0];
-          const imgUrl = URL.createObjectURL(file);
-          const reader = new FileReader();
-          reader.addEventListener('load',(e)=>{
+          if(file){
+            const imgUrl = URL.createObjectURL(file);
+            setSelectedImage(imgUrl);
+            const reader = new FileReader();
+            reader.addEventListener('load',(e)=>{
             setBase64File(e.target.result);
           })
-          reader.readAsDataURL(file); 
+            reader.readAsDataURL(file); 
           
-          setSelectedImage(imgUrl);
-          
+          }
+          else{
+            const baseElement = document.getElementById('detectedImg').parentNode;
+            removeBoxes(baseElement);
+          }
         }} />
         </Card.Body>
       </Card>
@@ -156,9 +217,9 @@ export default function VideoDetector() {
 
   }
   return (
-    <Container>
-      <Card>
-        <Card.Title>Demeter Recyclable Image Detection</Card.Title>
+    <Container style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
+      <Card style={{width:'700px'}}>
+        <Card.Title> <b>Demeter Recyclable Image Detection</b></Card.Title>
         <Card.Body>
         {error ? (
           <ImgUploadHandler stream={null}/>
@@ -167,8 +228,8 @@ export default function VideoDetector() {
       )}
         </Card.Body>
       </Card>
-      <p>Any object that is outlined in a rectangle is recyclable</p>
-      <p>Please note that what can be directly recycled depends on area and size of the item. When in doubt, always check with local recycling centers:</p>
+      <p><b>Any object that is outlined in a rectangle is recyclable. The rectangle may be incorrectly placed</b></p>
+      <p><div class="col-xl-12" style={{width: '64rem'}}>Please note that what can be directly recycled depends on area and size of the item. When in doubt, always check with local recycling centers:</div></p>
       <Button onClick={()=>window.open("https://search.earth911.com/")} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Find your Center</Button>
     </Container>
   );

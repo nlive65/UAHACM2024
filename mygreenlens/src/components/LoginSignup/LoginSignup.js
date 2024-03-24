@@ -57,7 +57,7 @@ const LoginSignup = ()=> {
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
             <div className='header'>
                 <div className='text'>Login</div>
                 <div className='underline'></div>
@@ -87,7 +87,7 @@ const LoginSignup = ()=> {
                 </div>
             </div>
 
-            {<div className="forgot_password" onClick={()=>handleForgotPassword()}>Forgot Password? <span>Click Here!</span></div>}
+            {<div className="forgot_password" onClick={()=>handleForgotPassword()}>Forgot Password? <span12>Click Here!</span12></div>}
 
             <div className="submit_container">
                 <div className={"submit"} onClick={() => handleSignup()}>Sign Up</div>
