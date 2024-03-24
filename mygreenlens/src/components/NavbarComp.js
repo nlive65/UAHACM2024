@@ -11,7 +11,6 @@ import './navbarcolour.css'
 
 import LoginSignup from './LoginSignup/LoginSignup';
 import Home from './Home';
-
 import Profile from './Profile/Profile';
 import VideoDetector from './imageIF';
 import Flower from './Flower';
