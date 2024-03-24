@@ -28,7 +28,7 @@ const DrawRectInFrame = (inputs)=>{
         const rect = document.createElement('div');
         rect.classList.add('bounding-box');
         rect.style.position = 'absolute';
-        rect.style.left = `${element.x + element.width}px`;
+        rect.style.left = `${element.x - element.width}px`;
         rect.style.bottom = `${element.y - element.height*0.25}px`;
         rect.style.width = `${element.width*scaleX}px`;
         rect.style.height = `${element.height*scaleY}px`;
@@ -50,7 +50,7 @@ const DrawRectInFrame = (inputs)=>{
         const rect = document.createElement('div');
         rect.classList.add('bounding-box');
         rect.style.position = 'absolute';
-        rect.style.left = `${element.x + element.width}px`;
+        rect.style.left = `${element.x}px`;
         rect.style.bottom = `${element.y - element.height*0.25}px`;
         rect.style.width = `${element.width*scaleX}px`;
         rect.style.height = `${element.height*scaleY}px`;
@@ -105,7 +105,7 @@ function VideoUploadHandler(props){
   },[frame]);
 
   return(
-    <Container>
+    <Container style={{width: '700px'}}>
       {isSnapshot ? <img src={frame}  height={640} width={640} id='image'/> : <video id='webCamera'
           autoPlay height={640} width={640}
           ref={video => {
@@ -116,7 +116,7 @@ function VideoUploadHandler(props){
         />}
       
         <br></br>
-      <Button onClick={()=>{
+      <Button style={'z-index:500'} height={'50px'} onClick={()=>{
         if(isSnapshot){
           setSnapshot(false);
           const parentNode =document.baseElement = document.getElementById('image').parentNode;
@@ -140,7 +140,7 @@ function VideoUploadHandler(props){
         
             //storage.push(blob);
         });
-      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}} value={isSnapshot ? "Retake" : "Take Snapshot"}></Button>
+      }} style={{background:"#94aa5b", borderColor:"#94aa5b", height: '25px', width: '75px'}} value={isSnapshot ? "Retake" : "Take Snapshot"}></Button>
     </Container>
   )
 }
