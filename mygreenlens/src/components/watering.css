@@ -1,0 +1,51 @@
+.watering-animation {
+    background-image: url('https://media.discordapp.net/attachments/1071495414076944425/1221224549056774144/watering-can-icon-sign-symbol-png.png?ex=6611ccfd&is=65ff57fd&hm=33c964d4253adfee1a338540335aed653462edfd14349672523d77d5e74c64a5&=&format=webp&quality=lossless&width=1098&height=1002');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 250px; /* Adjust size of the watering can image */
+    height: 250px; /* Adjust size of the watering can image */
+    position: absolute;
+    top: 275px; /* Adjust position of the watering can */
+    left: 50%; /* Adjust position of the watering can */
+    transform: translateX(-50%);
+    animation: watering 1s ease-out forwards, water-droplets 1s ease-out forwards;
+  }
+  
+  @keyframes watering {
+    0% {
+      transform: translateX(-50%) rotate(0deg);
+    }
+    25% {
+      transform: translateX(-50%) rotate(-20deg);
+    }
+    50% {
+      transform: translateX(-50%) rotate(0deg);
+    }
+    75% {
+      transform: translateX(-50%) rotate(20deg);
+    }
+    100% {
+      transform: translateX(-50%) rotate(0deg);
+    }
+  }
+  
+  @keyframes water-droplets {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+      transform: translateY(-20px) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-40px) rotate(-10deg);
+    }
+    75% {
+      opacity: 1;
+      transform: translateY(-60px) rotate(10deg);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
