@@ -5,7 +5,7 @@
     width: 250px; /* Adjust size of the watering can image */
     height: 250px; /* Adjust size of the watering can image */
     position: absolute;
-    top: 200px; /* Adjust position of the watering can */
+    top: 275px; /* Adjust position of the watering can */
     left: 50%; /* Adjust position of the watering can */
     transform: translateX(-50%);
     animation: watering 1s ease-out forwards, water-droplets 1s ease-out forwards;
