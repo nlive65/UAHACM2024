@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import './watering.css'; // Importing the CSS file
 import Placeholder from 'react-bootstrap/Placeholder';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import {collection,getDoc, updateDoc, doc, setDoc} from "firebase/firestore";
 import app,{ db, auth } from '../firebase';
 
