@@ -6,21 +6,18 @@
 }
 .gradient{
     background-image: linear-gradient(to bottom, #FFFDD0, #f0f0f0);
-
 }
 .profile-down{
     margin-top: 20px;
 }
-profile-title{
+.profile-title{
     font-size: 24px;
     font-weight: 600;
 }
 
-
 .signout_container{
     display: flex;
-    gap: 30px;
-    height: 25px;
+    height: 50px;
     margin: auto;
 }
 
@@ -33,7 +30,7 @@ profile-title{
     height: 40px;
     color: #fff;
     background: #94aa5b;
-    border-radius: 50px;
+    border-radius: 55px;
     font-size: 19px;
     font-weight: 700;
     cursor: pointer;

@@ -3,7 +3,7 @@ import './watering.css'; // Importing the CSS file
 import Placeholder from 'react-bootstrap/Placeholder';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {collection,getDocs, updateDoc, doc} from "firebase/firestore";
+import {collection,getDoc, updateDoc, doc, setDoc} from "firebase/firestore";
 import app,{ db, auth } from '../firebase';
 
 
@@ -50,12 +50,14 @@ function FlowerGame() {
       setScore(prevScore => prevScore + 1);
       setIsWatering(true);
 
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(userRef, {score: score});
+
       // Turn off watering animation after 1 second
       setTimeout(() => {
         setIsWatering(false);
       }, 1000);
     }
-
 
   };
 
@@ -64,20 +66,29 @@ function FlowerGame() {
       const user = auth.currentUser;
       if (user) {
         const userRef = doc(db, 'users', user.uid);
-        await updateDoc(userRef, { score: score });
+        const userDoc = await getDoc(userRef);
+        if(userDoc.exists()){
+          const userData = userDoc.data();
+        }
+        await setDoc(userRef, { score: score }, { merge: true });
       }
     } catch (error) {
       console.error('Error updating score in Firestore:', error.message);
     }
   };
 
-  updateScoreFirestore();
+  useEffect(()=>
+  {
+    updateScoreFirestore();
+  }, [score]);
+
+
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#fffdd0', minHeight: '100vh' }}>
       <h1><b>Click the Button Every Time You Recycle!</b></h1>
       <h4>This is how you can track how many items you have recycled. Each time you 
-        recycle four times, you grow a flower for you garden!
+        recycle four times, you grow a flower for your garden!
       </h4>
       <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
     </Row> 
