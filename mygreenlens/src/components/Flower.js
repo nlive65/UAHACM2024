@@ -22,6 +22,7 @@ function FlowerGame() {
     { image: 'https://pngfre.com/wp-content/uploads/sunflower-png-image-from-pngfre-13-743x1024.png', name: 'Sunflower' },
     { image: 'https://i.pinimg.com/originals/06/e9/ac/06e9ac4858945e0a81e867b219d693b2.png', name: 'Tulip' },
     { image: 'https://static.vecteezy.com/system/resources/previews/008/505/482/original/daisy-flower-clipart-png.png', name: 'Daisy' },
+    { image: 'https://images.vexels.com/media/users/3/240372/isolated/preview/ce959158fdc4ddf831a49e1524e52242-pink-flower-stem-nature.png', name: 'Rose' },
     // Add more flowers as needed
   ];
 
@@ -57,7 +58,7 @@ function FlowerGame() {
     <div>
       <h1><b>Click the Button Every Time You Recycle!</b></h1>
       <h4>This is how you can track how many items you have recycled. Each time you 
-        recycle four times, you grow a flower for you garden!
+        recycle four times, you grow a flower for your garden!
       </h4>
       <Row><Placeholder style={{background:"#94aa5b", borderColor:"#94aa5b"}} xs={12} size="lg" />
     </Row> 
