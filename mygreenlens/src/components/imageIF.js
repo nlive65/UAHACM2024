@@ -5,12 +5,83 @@ import axios from 'axios';
 import data from './secret.json';
 import { useEffect, useRef } from "react";
 
+const roboflowCall = (base64File)=>{
+  console.log(base64File);
+    if(base64File){
+      axios({
+        method: "POST",
+        url: "https://detect.roboflow.com/recycleitemsreal/1",
+        params: {
+          api_key:  data['roboflowAPIKey'],
+        },
+        data: base64File,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(function(response){
+        console.log(response.data);
+        
+      })
+      .catch(function(error){
+        console.log(error.message);
+        console.log(base64File);
+        return(
+          <></>
+        );
+      })
+    }
+
+}
+
+function VideoUploadHandler(props){
+  const [frame, setFrame] = useState(null);
+  useEffect(()=>{
+    roboflowCall(frame);
+
+  },[frame])
+  return(
+    <Container>
+      <video
+          autoPlay
+          ref={video => {
+            if (video) {
+              video.srcObject = props.stream;
+            }
+          }}
+        />
+        <br></br>
+      <Button onClick={()=>{
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const videoElem = document.getElementsByTagName('video')[0];
+        canvas.height = videoElem.videoHeight;
+        canvas.width = videoElem.videoWidth;
+        ctx.drawImage(videoElem, 0, 0);
+        canvas.toBlob(blob=> {
+            console.log(blob);
+              const reader = new FileReader();
+              reader.addEventListener('load',(e)=>{
+                setFrame(e.target.result);
+            });
+              reader.readAsDataURL(blob);
+            //storage.push(blob);
+        });
+        
+      }} style={{background:"#94aa5b", borderColor:"#94aa5b"}}>Take Snapshot</Button>
+    </Container>
+  )
+}
 
 
 function ImgUploadHandler(){
   const [selectedImage, setSelectedImage] = useState(null);
   const [responseContent, setResponseContent] = useState(null);
   const [base64File, setBase64File] = useState(null);
+  useEffect(()=>{
+    roboflowCall(base64File);
+  },[base64File]);
+  
   return(
     <Container>
       <Card>
@@ -25,36 +96,16 @@ function ImgUploadHandler(){
           const file = event.target.files[0];
           const imgUrl = URL.createObjectURL(file);
           const reader = new FileReader();
-          reader.addEventListener('load',()=>{
-            setBase64File(reader.result);
+          reader.addEventListener('load',(e)=>{
+            setBase64File(e.target.result);
           })
           reader.readAsDataURL(file); 
           
           setSelectedImage(imgUrl);
-          axios({
-            method: "POST",
-            url: "https://detect.roboflow.com/recycleitemsreal/1",
-            params: {
-              api_key:  data['roboflowAPIKey'],
-            },
-            data: base64File,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          })
-          .then(function(response){
-            setResponseContent(response.data);
-          })
-          .catch(function(error){
-            console.log(error.message);
-            console.log(base64File);
-            setResponseContent(error.message);
-            setResponseContent(base64File);
-          })
+          
         }} />
         </Card.Body>
       </Card>
-      {responseContent}
     </Container>
   );
 }
@@ -74,14 +125,7 @@ export default function VideoDetector() {
         {error ? (
           <ImgUploadHandler />
       ) : (
-        <video
-          autoPlay
-          ref={video => {
-            if (video) {
-              video.srcObject = stream;
-            }
-          }}
-        />
+          <VideoUploadHandler stream={stream}/>
       )}
         </Card.Body>
       </Card>
