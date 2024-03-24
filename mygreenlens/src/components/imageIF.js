@@ -116,7 +116,7 @@ function VideoUploadHandler(props){
         />}
       
         <br></br>
-      <Button style={'z-index:500'} height={'50px'} onClick={()=>{
+      <Button  onClick={()=>{
         if(isSnapshot){
           setSnapshot(false);
           const parentNode =document.baseElement = document.getElementById('image').parentNode;
