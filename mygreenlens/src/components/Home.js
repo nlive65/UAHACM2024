@@ -19,9 +19,11 @@ function AutoLayoutVariableExample() {
         Easy way to tell what is Recyclable!
         </b></h4>
       <h6>
+      <div class="col-xl-12" style={{width: '64rem'}}>
         When being asked to recycle, it is hard to know what can and can not be recycled. Our goal is 
         to give people an easy way to tell when an item can be recycled.
         We have created an AI model that can tell you if you can recycle that item. 
+        </div>
       </h6>
       </Row>
       <Row>
@@ -59,7 +61,7 @@ function AutoLayoutVariableExample() {
           <Card.Text>
            When recycling, it is important to follow the rules of 
            the recycling in your city. When different materials are recycled they are 
-           sorted so making sure the can be properly sorted and recycled. This
+           sorted so making sure the can be properly sorted and recycled.This
            is just as important as the actual act of recycling. Below are resources that 
            explain how you can recycle better. 
           </Card.Text>
