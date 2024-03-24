@@ -5,33 +5,62 @@ import axios from 'axios';
 import data from './secret.json';
 import { useEffect, useRef } from "react";
 
+
+function removeBoxes(parentNode){
+  const currBoxes = parentNode.querySelectorAll('.bounding-box');
+    currBoxes.forEach(element=>{
+      parentNode.removeChild(element);
+    });
+}
+
 const DrawRectInFrame = (inputs)=>{
   let baseElement;
   if(inputs.stream){
-    baseElement = document.getElementsByTagName('video')[0];
+    baseElement = document.getElementById('image');
+    if(inputs.bounds){
+      const img = inputs.bounds.data.image;
+      const scaleX = 640/img.width;
+      const scaleY = 640/img.height;
+      const prediction = inputs.bounds.data.predictions;
+      const parentNode = baseElement.parentNode;
+      removeBoxes(parentNode);
+      prediction.forEach(element => {
+        const rect = document.createElement('div');
+        rect.classList.add('bounding-box');
+        rect.style.position = 'absolute';
+        rect.style.left = `${element.x + element.width}px`;
+        rect.style.bottom = `${element.y - element.height*0.25}px`;
+        rect.style.width = `${element.width*scaleX}px`;
+        rect.style.height = `${element.height*scaleY}px`;
+        rect.style.border = '2px solid red'; // Adjust styling as needed
+        rect.style.zIndex =500;
+        baseElement.parentNode.appendChild(rect);
+      });
+    }
   }
   else{
-    baseElement = document.getElementById('detectedImg');
+    baseElement = document.getElementById('detectedImg');if(inputs.bounds){
+      const img = inputs.bounds.data.image;
+      const scaleX = 640/img.width;
+      const scaleY = 640/img.height;
+      const prediction = inputs.bounds.data.predictions;
+      const parentNode = baseElement.parentNode;
+      removeBoxes(parentNode);
+      prediction.forEach(element => {
+        const rect = document.createElement('div');
+        rect.classList.add('bounding-box');
+        rect.style.position = 'absolute';
+        rect.style.left = `${element.x + element.width}px`;
+        rect.style.bottom = `${element.y - element.height*0.25}px`;
+        rect.style.width = `${element.width*scaleX}px`;
+        rect.style.height = `${element.height*scaleY}px`;
+        rect.style.border = '2px solid red'; // Adjust styling as needed
+        rect.style.zIndex =500;
+        baseElement.parentNode.appendChild(rect);
+      });
+    }
   }
-  if(inputs.bounds){
-    const img = inputs.bounds.data.image;
-    const scaleX = 640/img.width;
-    const scaleY = 640/img.height;
-    const prediction = inputs.bounds.data.predictions;
-    prediction.forEach(element => {
-      const rect = document.createElement('div');
-      rect.classList.add('bounding-box');
-      rect.style.position = 'absolute';
-      rect.style.left = `${element.x+ 0.5*element.width*scaleX}px`;
-      rect.style.bottom = `${baseElement.style.top+ element.y/scaleY }px`;
-      rect.style.width = `${element.width*scaleX}px`;
-      rect.style.height = `${element.height*scaleY}px`;
-      rect.style.border = '2px solid red'; // Adjust styling as needed
-      rect.style.zIndex =500;
-      baseElement.parentNode.appendChild(rect);
-
-    });
-  }
+  
 }
 
 
@@ -55,7 +84,7 @@ const roboflowCall = (base64File,callback)=>{
       .catch(function(error){
         console.log(error.message);
         console.log(base64File);
-        callback(null); 
+        
       })
     }
 }
@@ -77,7 +106,7 @@ function VideoUploadHandler(props){
 
   return(
     <Container>
-      {isSnapshot ? <img src={frame}  height={640} width={640}/> : <video id='webCamera'
+      {isSnapshot ? <img src={frame}  height={640} width={640} id='image'/> : <video id='webCamera'
           autoPlay height={640} width={640}
           ref={video => {
             if (video) {
@@ -90,6 +119,8 @@ function VideoUploadHandler(props){
       <Button onClick={()=>{
         if(isSnapshot){
           setSnapshot(false);
+          const parentNode =document.baseElement = document.getElementById('image').parentNode;
+          removeBoxes(parentNode);
           return;
         }
         setSnapshot(true);
@@ -144,15 +175,20 @@ function ImgUploadHandler(props){
         <input type="file" onChange={(event)=>{
           setSelectedImage(null);
           const file = event.target.files[0];
-          const imgUrl = URL.createObjectURL(file);
-          const reader = new FileReader();
-          reader.addEventListener('load',(e)=>{
+          if(file){
+            const imgUrl = URL.createObjectURL(file);
+            setSelectedImage(imgUrl);
+            const reader = new FileReader();
+            reader.addEventListener('load',(e)=>{
             setBase64File(e.target.result);
           })
-          reader.readAsDataURL(file); 
+            reader.readAsDataURL(file); 
           
-          setSelectedImage(imgUrl);
-          
+          }
+          else{
+            const baseElement = document.getElementById('detectedImg').parentNode;
+            removeBoxes(baseElement);
+          }
         }} />
         </Card.Body>
       </Card>
