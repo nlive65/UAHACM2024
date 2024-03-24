@@ -16,11 +16,11 @@ function AutoLayoutVariableExample() {
         Green Lens
         </b> </h1>
       <h4> <b>
-        Easy way to tell what is able to be recycled!
+        Easy way to tell what is Recyclable!
         </b></h4>
       <h6>
         When being asked to recycle, it is hard to know what can and can not be recycled. Our goal is 
-        to give people and easy way to tell when an item can be recycled.
+        to give people an easy way to tell when an item can be recycled.
         We have created an AI model that can tell you if you can recycle that item. 
         
       </h6>
